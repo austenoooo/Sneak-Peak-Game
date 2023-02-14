@@ -79,31 +79,56 @@ const leftCoor = [33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 
 // global variable that store the position of each vertex of the eyes
 var rightPos = [];
 var leftPos = [];
+var points = [];
 
 function detectWebcam() {
   detector.estimateFaces(video, estimationConfig).then(function (results){
     // console.log(results);
     rightPos.splice(0);
     leftPos.splice(0);
+    
+    for (let i = 0; i < points.length; i++){
+      liveView.removeChild(points[i]);
+    }
+    points.splice(0);
 
     // when there is face detected
     if (results.length > 0){
-      let points = results[0].keypoints;
+      let keypoints = results[0].keypoints;
       
       // get all the position of the vertex of the right eye
       for (let i = 0; i < rightCoor.length; i++){
-        let pos = points[rightCoor[i]];
+        let pos = keypoints[rightCoor[i]];
         rightPos.push({x: pos.x, y: pos.y});
+
+        // drawing the point
+        const point = document.createElement("div");
+        point.setAttribute("class", "keypoints");
+        point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
+
+        liveView.appendChild(point);
+        points.push(point);
+
       }
 
       // get all the position of the vertex of the left eye
       for (let i = 0; i < leftCoor.length; i++){
-        let pos = points[leftCoor[i]];
+        let pos = keypoints[leftCoor[i]];
         leftPos.push({x: pos.x, y: pos.y});
+
+        // drawing the point
+        const point = document.createElement("div");
+        point.setAttribute("class", "keypoints");
+        point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
+
+        liveView.appendChild(point);
+        points.push(point);
       }
+
     }
+
+    window.requestAnimationFrame(detectWebcam);
   });
-  window.requestAnimationFrame(detectWebcam);
 }
 
 

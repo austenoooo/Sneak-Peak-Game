@@ -6,9 +6,16 @@ body {
 video{
   position: absolute;
   z-index: -1;
-  visibility: hidden;
 }
 
 #canva{
   position: absolute;
+}
+
+.keypoints{
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: cyan;
+  z-index: 99;
 }
