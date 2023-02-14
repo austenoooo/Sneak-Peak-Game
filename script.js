@@ -17,6 +17,7 @@ function loadModel(){
   const detectorConfig = {
     runtime: 'tfjs',
   };
+  
   // not sure if the syntex is correct or not
   faceLandmarksDetection.createDetector(model, detectorConfig).then(function (loadedDetector){
   detector = loadedDetector;
