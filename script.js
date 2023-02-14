@@ -134,6 +134,8 @@ function detectWebcam() {
 
 let myCanva;
 let capture;
+let rightMask;
+let leftMask;
 
 // p5 code
 function setup(){
@@ -142,37 +144,44 @@ function setup(){
 
   capture = createCapture(VIDEO);
   capture.hide();
+
+  rightMask = createGraphics(width, height);
+  leftMask = createGraphics(width, height);
 }
 
 function draw(){
+
+  rightMask = createGraphics(width, height);
+  leftMask = createGraphics(width, height);
 
   // background
   background(255);
 
   // draw the video
-  image(capture, 0, 0, 640, 480);
+  // image(capture, 0, 0, 640, 480);
 
   // draw the eye contours when availabel
   if (rightPos.length > 0 && leftPos.length > 0){
     noFill();
-    stroke('red');
-    strokeWeight(3);
+    noStroke();
 
-    // draw right eye contour
-    beginShape();
+    rightMask.push();
+    rightMask.beginShape();
     for(let i = 0; i < rightPos.length; i++){
-      vertex(rightPos[i].x, rightPos[i].y);
+      rightMask.curveVertex(rightPos[i].x, rightPos[i].y);
     }
-    endShape(CLOSE);
+    rightMask.endShape(CLOSE);
+    rightMask.pop();
 
     // draw left eye contour
-    beginShape();
-    for(let i = 0; i < leftPos.length; i++){
-      vertex(leftPos[i].x, leftPos[i].y);
-    }
-    endShape(CLOSE);
+    // beginShape();
+    // for(let i = 0; i < leftPos.length; i++){
+    //   vertex(leftPos[i].x, leftPos[i].y);
+    // }
+    // endShape(CLOSE);
 
-    
+    capture.mask(rightMask);
+    image(capture, 0, 0, capture.width, capture.height);
 
   }
 }
