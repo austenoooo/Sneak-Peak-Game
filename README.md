@@ -1,1 +1,1 @@
-# Sneak-Peak-Game
+# Sneak-Peek-Game

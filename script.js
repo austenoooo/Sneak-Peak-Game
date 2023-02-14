@@ -20,6 +20,7 @@ function loadModel(){
     runtime: 'tfjs',
     refineLandmarks: true
   };
+  
   // not sure if the syntex is correct or not
   faceLandmarksDetection.createDetector(model, detectorConfig).then(function (loadedDetector){
   detector = loadedDetector;
@@ -116,8 +117,6 @@ function setup(){
 
   capture = createCapture(VIDEO);
   capture.hide();
-
-  noLoop();
 }
 
 function draw(){
