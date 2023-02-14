@@ -117,8 +117,6 @@ function setup(){
 
   capture = createCapture(VIDEO);
   capture.hide();
-
-  noLoop();
 }
 
 function draw(){
