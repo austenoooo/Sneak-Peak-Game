@@ -3,148 +3,268 @@
 //   location.reload();
 // };
 
-// HTML elements
-const video = document.getElementById("webcam");
-const liveView = document.getElementById("live-view");
-
-
-// One possible solutions is to load two detector, one has refineLandmarks and one doesn't 
-// detector
-var detector = undefined;
-
-const estimationConfig = {flipHorizontal: false};
-
-function loadModel(){
-  const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
-  const detectorConfig = {
-    runtime: 'tfjs',
-    refineLandmarks: true
-  };
-  
-  // not sure if the syntex is correct or not
-  faceLandmarksDetection.createDetector(model, detectorConfig).then(function (loadedDetector){
-  detector = loadedDetector;
-  loadCamera();
- });
-}
-
-// start the detection
-loadModel();
-
-
-// prompt the user to grant webcame access
-navigator.permissions
-  .query({name: "camera"})
-  .then((permissionObject) => {
-    console.log(permissionObject.state);
-  })
-  .catch((error) => {
-    console.log("Got error" + error);
-  });
-
-// check if webcam access is supported
-function getUserMediaSupported() {
-  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-}
-
-function loadCamera(){
-  if (getUserMediaSupported()){
-    enableCam();
-  } else{
-    console.warn("webcam is not supported by your browser");
-  }
-}
-
-function enableCam(event){
-  // only continue if the detector has finished loading
-  if (!detector){
-    return;
-  }
-
-  const constraints = {
-    video: true,
-  }
-
-  //activate the webcam strem
-  navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
-    video.srcObject = stream;
-    video.addEventListener("loadeddata", detectWebcam);
-  });
-}
-
-// left eye and right eye coordinates
-const rightCoor = [362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398];
-const leftCoor = [33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246];
-
-// global variable that store the position of each vertex of the eyes
-var rightPos = [];
-var leftPos = [];
-var points = [];
-
-function detectWebcam() {
-  detector.estimateFaces(video, estimationConfig).then(function (results){
-    // console.log(results);
-    rightPos.splice(0);
-    leftPos.splice(0);
-    
-    for (let i = 0; i < points.length; i++){
-      liveView.removeChild(points[i]);
-    }
-    points.splice(0);
-
-    // when there is face detected
-    if (results.length > 0){
-      let keypoints = results[0].keypoints;
-      
-      // get all the position of the vertex of the right eye
-      for (let i = 0; i < rightCoor.length; i++){
-        let pos = keypoints[rightCoor[i]];
-        rightPos.push({x: pos.x, y: pos.y});
-
-        // drawing the point
-        const point = document.createElement("div");
-        point.setAttribute("class", "keypoints");
-        point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
-
-        liveView.appendChild(point);
-        points.push(point);
-
-      }
-
-      // get all the position of the vertex of the left eye
-      for (let i = 0; i < leftCoor.length; i++){
-        let pos = keypoints[leftCoor[i]];
-        leftPos.push({x: pos.x, y: pos.y});
-
-        // drawing the point
-        const point = document.createElement("div");
-        point.setAttribute("class", "keypoints");
-        point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
-
-        liveView.appendChild(point);
-        points.push(point);
-      }
-
-    }
-
-    window.requestAnimationFrame(detectWebcam);
-  });
-}
 
 
 let myCanva;
 let capture;
 
+
+// all the computer eyes
+let leftEyeCom;
+let rightEyeCom;
+
+let leftPupilOutCom;
+let leftPupilInCom;
+
+let rightPupilOutCom;
+let rightPupilInCom;
+
+let eyeHeightCom = 50;
+
+// all the player eyes
+let leftEyePlay;
+let rightEyePlay;
+
+let leftPupilOutPlay;
+let leftPupilInPlay;
+
+let rightPupilOutPlay;
+let rightPupilInPlay;
+
+let eyeHeightPlay = 50;
+
 // p5 code
 function setup(){
   myCanva = createCanvas(window.innerWidth, window.innerHeight);
   myCanva.parent("canva");
+
+  background("#FFFEEC");
+  smooth();
+
+  textFont("Unbounded");
+  
+  
 }
 
 function draw(){
 
+  background("#FFFEEC");
+  
+  if(eyeHeightCom - 10 > 0 && frameCount % 2 == 0){
+    // eyeHeight -= 10;
+  }
+
+  interfaceFrame();
+  
+  computerEyeStarter();
+  drawComputerEye();
+
+  playerEyeStarter();
+  drawPlayerEye();
+  
+
 }
 
+
+
+function interfaceFrame(){
+  // draw computer side
+  // square block
+  fill("#00EAC9");
+  stroke("#4747FC");
+  strokeWeight(30);
+  rect(width/2 - 30 - 380, height/2 - 380/2, 380, 380, 0, 30, 30, 30);
+  // label
+  noStroke();
+  fill("#4747FC");
+  rect(width/2 - 30 - 380 - 15, height/2 - 380/2 - 70, 220, 70, 10);
+  // text
+  fill("#FFFEEC");
+  textSize(22);
+  text("COMPUTER", width/2 - 30 - 380 + 15, height/2 - 380/2 - 30);
+  
+
+  // draw player side
+  // square block
+  fill("#FF4F14");
+  stroke("#FFC8FF");
+  strokeWeight(30);
+  rect(width/2 + 30, height/2 - 380/2, 380, 380, 0, 30, 30, 30);
+  // label
+  noStroke();
+  fill("#FFC8FF");
+  rect(width/2 + 30 - 15, height/2 - 380/2 - 70, 220, 70, 10);
+  // text
+  fill("#FF4F14");
+  textSize(22);
+  text("YOU", width/2 + 30 + 15, height/2 - 380/2 - 30);
+}
+
+
+
+
+function computerEyeStarter(){
+  rightEyeCom = createGraphics(width, height);
+  leftEyeCom = createGraphics(width, height);
+  
+  leftPupilOutCom = createGraphics(width, height);
+  leftPupilInCom = createGraphics(width, height);
+
+  rightPupilOutCom = createGraphics(width, height);
+  rightPupilInCom = createGraphics(width, height);
+  
+  // pupil outside
+  leftPupilOutCom.fill('red');
+  leftPupilOutCom.noStroke();
+  leftPupilOutCom.ellipse(50, 25, 50, 50);
+  leftPupilOutCom = leftPupilOutCom.get();
+  
+  // pupil inside
+  leftPupilInCom.fill('black');
+  leftPupilInCom.noStroke();
+  leftPupilInCom.ellipse(50, 25, 35, 35);
+  leftPupilInCom = leftPupilInCom.get();
+  
+  // pupil outside
+  rightPupilOutCom.fill('red');
+  rightPupilOutCom.noStroke();
+  rightPupilOutCom.ellipse(200, 25, 50, 50);
+  rightPupilOutCom = rightPupilOutCom.get();
+
+  // pupil inside
+  rightPupilInCom.fill('black');
+  rightPupilInCom.noStroke();
+  rightPupilInCom.ellipse(200, 25, 35, 35);
+  rightPupilInCom = rightPupilInCom.get();
+}
+
+
+
+
+function playerEyeStarter(){
+  rightEyePlay = createGraphics(width, height);
+  leftEyePlay = createGraphics(width, height);
+  
+  leftPupilOutPlay = createGraphics(width, height);
+  leftPupilInPlay = createGraphics(width, height);
+
+  rightPupilOutPlay = createGraphics(width, height);
+  rightPupilInPlay = createGraphics(width, height);
+  
+  // pupil outside
+  leftPupilOutPlay.fill('#8EA1FF');
+  leftPupilOutPlay.noStroke();
+  leftPupilOutPlay.ellipse(50, 25, 50, 50);
+  leftPupilOutPlay = leftPupilOutPlay.get();
+  
+  // pupil inside
+  leftPupilInPlay.fill('black');
+  leftPupilInPlay.noStroke();
+  leftPupilInPlay.ellipse(50, 25, 35, 35);
+  leftPupilInPlay = leftPupilInPlay.get();
+  
+  // pupil outside
+  rightPupilOutPlay.fill('#8EA1FF');
+  rightPupilOutPlay.noStroke();
+  rightPupilOutPlay.ellipse(200, 25, 50, 50);
+  rightPupilOutPlay = rightPupilOutPlay.get();
+
+  // pupil inside
+  rightPupilInPlay.fill('black');
+  rightPupilInPlay.noStroke();
+  rightPupilInPlay.ellipse(200, 25, 35, 35);
+  rightPupilInPlay = rightPupilInCom.get();
+}
+
+
+
+
+function drawComputerEye(){
+  push();
+  // width: 125 -> (width - 30 - 380/2)
+  // height: 25 -> height/2
+  translate(width/2 - 30 - 380/2 - 125, height/2 - 25);
+
+  // left eye
+  leftEyeCom.remove();
+  leftEyeCom.noStroke();
+  leftEyeCom.fill('white');
+  leftEyeCom.ellipse(50, 25, 100, eyeHeightCom);
+
+  image(leftEyeCom, 0, 0, width, height);
+  
+  // right eye
+  rightEyeCom.remove();
+  rightEyeCom.noStroke();
+  rightEyeCom.fill('white');
+  rightEyeCom.ellipse(200, 25, 100, eyeHeightCom);
+  
+  image(rightEyeCom, 0, 0, width, height);
+  
+  leftPupilOutCom.mask(leftEyeCom);
+  image(leftPupilOutCom, 0, 0, width, height);
+  
+  leftPupilInCom.mask(leftEyeCom);
+  image(leftPupilInCom, 0, 0, width, height);
+
+  rightPupilOutCom.mask(rightEyeCom);
+  image(rightPupilOutCom, 0, 0, width, height);
+
+  rightPupilInCom.mask(rightEyeCom);
+  image(rightPupilInCom, 0, 0, width, height);
+
+  // eyebrows
+  fill("#4747F3");
+  circle(125 - 30, -30, 10, 10);
+  circle(125 + 30, -30, 10, 10);
+
+  pop();
+}
+
+function drawPlayerEye(){
+  push();
+  // width: 125 -> (width/2 + 30 + 380/2)
+  // height: 25 -> height/2
+  translate(width/2 + 30 + 380/2 - 125, height/2 - 25);
+
+  // left eye
+  leftEyePlay.remove();
+  leftEyePlay.noStroke();
+  leftEyePlay.fill('white');
+  leftEyePlay.ellipse(50, 25, 100, eyeHeightPlay);
+
+  image(leftEyePlay, 0, 0, width, height);
+  
+  // right eye
+  rightEyePlay.remove();
+  rightEyePlay.noStroke();
+  rightEyePlay.fill('white');
+  rightEyePlay.ellipse(200, 25, 100, eyeHeightPlay);
+  
+  image(rightEyePlay, 0, 0, width, height);
+  
+  leftPupilOutPlay.mask(leftEyePlay);
+  image(leftPupilOutPlay, 0, 0, width, height);
+  
+  leftPupilInCom.mask(leftEyePlay);
+  image(leftPupilInPlay, 0, 0, width, height);
+
+  rightPupilOutCom.mask(rightEyePlay);
+  image(rightPupilOutPlay, 0, 0, width, height);
+
+  rightPupilInCom.mask(rightEyePlay);
+  image(rightPupilInPlay, 0, 0, width, height);
+
+  // eyebrows
+  fill("#FFC8FF");
+  circle(125 - 30, -30, 10, 10);
+  circle(125 + 30, -30, 10, 10);
+
+  pop();
+}
+
+
+// check whether the play's eyes are closed
 function checkEyeClose(){
   if (rightPos.length > 0 && leftPos.length > 0){
   
