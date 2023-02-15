@@ -6,7 +6,6 @@
 
 
 let myCanva;
-let capture;
 
 
 // all the computer eyes
@@ -31,7 +30,7 @@ let leftPupilInPlay;
 let rightPupilOutPlay;
 let rightPupilInPlay;
 
-let eyeHeightPlay = 50;
+let eyeHeightPlay = 0;
 
 // p5 code
 function setup(){
@@ -42,6 +41,9 @@ function setup(){
   smooth();
 
   textFont("Unbounded");
+
+  computerEyeStarter();
+  playerEyeStarter();
   
   
 }
@@ -50,18 +52,22 @@ function draw(){
 
   background("#FFFEEC");
   
-  if(eyeHeightCom - 10 > 0 && frameCount % 2 == 0){
-    // eyeHeight -= 10;
+  // if(eyeHeightCom - 10 > 0 && frameCount % 2 == 0){
+  //   // eyeHeight -= 10;
+  // }
+
+  if (playerEyeOpen){
+    eyeHeightPlay = 50;
+  }
+  else{
+    eyeHeightPlay = 0;
   }
 
   interfaceFrame();
   
-  computerEyeStarter();
   drawComputerEye();
 
-  playerEyeStarter();
-  drawPlayerEye();
-  
+  drawPlayerEye(eyeHeightPlay);
 
 }
 
@@ -151,29 +157,29 @@ function playerEyeStarter(){
   rightPupilOutPlay = createGraphics(width, height);
   rightPupilInPlay = createGraphics(width, height);
   
-  // pupil outside
-  leftPupilOutPlay.fill('#8EA1FF');
-  leftPupilOutPlay.noStroke();
-  leftPupilOutPlay.ellipse(50, 25, 50, 50);
-  leftPupilOutPlay = leftPupilOutPlay.get();
+  // // pupil outside
+  // leftPupilOutPlay.fill('#8EA1FF');
+  // leftPupilOutPlay.noStroke();
+  // leftPupilOutPlay.ellipse(50, 25, 50, 50);
+  // // leftPupilOutPlay = leftPupilOutPlay.get();
   
-  // pupil inside
-  leftPupilInPlay.fill('black');
-  leftPupilInPlay.noStroke();
-  leftPupilInPlay.ellipse(50, 25, 35, 35);
-  leftPupilInPlay = leftPupilInPlay.get();
+  // // pupil inside
+  // leftPupilInPlay.fill('black');
+  // leftPupilInPlay.noStroke();
+  // leftPupilInPlay.ellipse(50, 25, 35, 35);
+  // leftPupilInPlay = leftPupilInPlay.get();
   
-  // pupil outside
-  rightPupilOutPlay.fill('#8EA1FF');
-  rightPupilOutPlay.noStroke();
-  rightPupilOutPlay.ellipse(200, 25, 50, 50);
-  rightPupilOutPlay = rightPupilOutPlay.get();
+  // // pupil outside
+  // rightPupilOutPlay.fill('#8EA1FF');
+  // rightPupilOutPlay.noStroke();
+  // rightPupilOutPlay.ellipse(200, 25, 50, 50);
+  // rightPupilOutPlay = rightPupilOutPlay.get();
 
-  // pupil inside
-  rightPupilInPlay.fill('black');
-  rightPupilInPlay.noStroke();
-  rightPupilInPlay.ellipse(200, 25, 35, 35);
-  rightPupilInPlay = rightPupilInCom.get();
+  // // pupil inside
+  // rightPupilInPlay.fill('black');
+  // rightPupilInPlay.noStroke();
+  // rightPupilInPlay.ellipse(200, 25, 35, 35);
+  // rightPupilInPlay = rightPupilInCom.get();
 }
 
 
@@ -186,7 +192,7 @@ function drawComputerEye(){
   translate(width/2 - 30 - 380/2 - 125, height/2 - 25);
 
   // left eye
-  leftEyeCom.remove();
+  leftEyeCom.clear();
   leftEyeCom.noStroke();
   leftEyeCom.fill('white');
   leftEyeCom.ellipse(50, 25, 100, eyeHeightCom);
@@ -194,12 +200,13 @@ function drawComputerEye(){
   image(leftEyeCom, 0, 0, width, height);
   
   // right eye
-  rightEyeCom.remove();
+  rightEyeCom.clear();
   rightEyeCom.noStroke();
   rightEyeCom.fill('white');
   rightEyeCom.ellipse(200, 25, 100, eyeHeightCom);
   
   image(rightEyeCom, 0, 0, width, height);
+  
   
   leftPupilOutCom.mask(leftEyeCom);
   image(leftPupilOutCom, 0, 0, width, height);
@@ -215,8 +222,8 @@ function drawComputerEye(){
 
   // eyebrows
   fill("#4747F3");
-  circle(125 - 30, -30, 10, 10);
-  circle(125 + 30, -30, 10, 10);
+  circle(125 - 30, -30, 10);
+  circle(125 + 30, -30, 10);
 
   pop();
 }
@@ -228,7 +235,7 @@ function drawPlayerEye(){
   translate(width/2 + 30 + 380/2 - 125, height/2 - 25);
 
   // left eye
-  leftEyePlay.remove();
+  leftEyePlay.clear();
   leftEyePlay.noStroke();
   leftEyePlay.fill('white');
   leftEyePlay.ellipse(50, 25, 100, eyeHeightPlay);
@@ -236,24 +243,44 @@ function drawPlayerEye(){
   image(leftEyePlay, 0, 0, width, height);
   
   // right eye
-  rightEyePlay.remove();
+  rightEyePlay.clear();
   rightEyePlay.noStroke();
   rightEyePlay.fill('white');
   rightEyePlay.ellipse(200, 25, 100, eyeHeightPlay);
   
   image(rightEyePlay, 0, 0, width, height);
   
-  leftPupilOutPlay.mask(leftEyePlay);
-  image(leftPupilOutPlay, 0, 0, width, height);
+  leftPupilOutPlay.clear();
+  leftPupilOutPlay.fill('#8EA1FF');
+  leftPupilOutPlay.noStroke();
+  leftPupilOutPlay.ellipse(50, 25, 50, 50);
+  let leftPupilOutPlayImg = leftPupilOutPlay.get();
+  leftPupilOutPlayImg.mask(leftEyePlay);
+  image(leftPupilOutPlayImg, 0, 0, width, height);
   
-  leftPupilInCom.mask(leftEyePlay);
-  image(leftPupilInPlay, 0, 0, width, height);
+  leftPupilInPlay.clear();
+  leftPupilInPlay.fill('black');
+  leftPupilInPlay.noStroke();
+  leftPupilInPlay.ellipse(50, 25, 35, 35);
+  let leftPupilInPlayImg = leftPupilInPlay.get();
+  leftPupilInPlayImg.mask(leftEyePlay);
+  image(leftPupilInPlayImg, 0, 0, width, height);
 
-  rightPupilOutCom.mask(rightEyePlay);
-  image(rightPupilOutPlay, 0, 0, width, height);
+  rightPupilOutPlay.clear();
+  rightPupilOutPlay.fill('#8EA1FF');
+  rightPupilOutPlay.noStroke();
+  rightPupilOutPlay.ellipse(200, 25, 50, 50);
+  let rightPupilOutPlayImg = rightPupilOutPlay.get();
+  rightPupilOutPlayImg.mask(rightEyePlay);
+  image(rightPupilOutPlayImg, 0, 0, width, height);
 
-  rightPupilInCom.mask(rightEyePlay);
-  image(rightPupilInPlay, 0, 0, width, height);
+  rightPupilInPlay.clear();
+  rightPupilInPlay.fill('black');
+  rightPupilInPlay.noStroke();
+  rightPupilInPlay.ellipse(200, 25, 35, 35);
+  let rightPupilInPlayImg = rightPupilInPlay.get();
+  rightPupilInPlayImg.mask(rightEyePlay);
+  image(rightPupilInPlayImg, 0, 0, width, height);
 
   // eyebrows
   fill("#FFC8FF");
@@ -264,49 +291,3 @@ function drawPlayerEye(){
 }
 
 
-// check whether the play's eyes are closed
-function checkEyeClose(){
-  if (rightPos.length > 0 && leftPos.length > 0){
-  
-      // get the min and max of both the x and y coordinates of the vertex
-      let rightMinX = 100000;
-      let rightMaxX = 0;
-      let rightMinY = 100000;
-      let rightMaxY = 0;
-  
-      for (i = 0; i < rightPos.length; i++){
-        if (rightPos[i].x > rightMaxX){
-          rightMaxX = rightPos[i].x;
-        }
-        if (rightPos[i].x < rightMinX){
-          rightMinX = rightPos[i].x;
-        }
-        if (rightPos[i].y > rightMaxY){
-          rightMaxY = rightPos[i].y;
-        }
-        if (rightPos[i].y < rightMinY){
-          rightMinY = rightPos[i].y;
-        }
-      }
-  
-      let leftMinX = 100000;
-      let leftMaxX = 0;
-      let leftMinY = 100000;
-      let leftMaxY = 0;
-  
-      for (i = 0; i < leftPos.length; i++){
-        if (leftPos[i].x > leftMaxX){
-          leftMaxX = leftPos[i].x;
-        }
-        if (leftPos[i].x < leftMinX){
-          leftMinX = leftPos[i].x;
-        }
-        if (leftPos[i].y > leftMaxY){
-          leftMaxY = leftPos[i].y;
-        }
-        if (leftPos[i].y < leftMinY){
-          leftMinY = leftPos[i].y;
-        }
-      }
-    }
-}
