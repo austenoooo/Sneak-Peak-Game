@@ -136,6 +136,8 @@ function detectWebcam() {
 
 // check whether the play's eyes are closed
 function checkEyeClose(keypoints){
+
+    // calculate threshold based on the detected height of the face
     let threshold = 8;
         
     let leftEyeOpen = true;
