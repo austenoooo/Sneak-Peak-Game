@@ -164,19 +164,19 @@ function playerEyeStarter(){
 
   leftPupilOutPlay.fill('#8EA1FF');
   leftPupilOutPlay.noStroke();
-  leftPupilOutPlay.ellipse(35, 25, 50, 50);
+  leftPupilOutPlay.ellipse(50, 25, 50, 50);
   
   leftPupilInPlay.fill('black');
   leftPupilInPlay.noStroke();
-  leftPupilInPlay.ellipse(35, 25, 35, 35);
+  leftPupilInPlay.ellipse(50, 25, 35, 35);
 
   rightPupilOutPlay.fill('#8EA1FF');
   rightPupilOutPlay.noStroke();
-  rightPupilOutPlay.ellipse(185, 25, 50, 50);
+  rightPupilOutPlay.ellipse(200, 25, 50, 50);
 
   rightPupilInPlay.fill('black');
   rightPupilInPlay.noStroke();
-  rightPupilInPlay.ellipse(185, 25, 35, 35);
+  rightPupilInPlay.ellipse(200, 25, 35, 35);
 }
 
 
@@ -276,3 +276,6 @@ function drawPlayerEye(){
 }
 
 
+function controlComputerEye(){
+
+}
