@@ -104,6 +104,14 @@ function interfaceFrame(){
   fill("#FF4F14");
   textSize(22);
   text("YOU", width/2 + 30 + 15, height/2 - 380/2 - 30);
+  // recording icon
+  if (detectionStart){
+    fill("#FF4F14");
+    circle(width/2 + 30 + 95, height/2 - 380/2 - 40, 20);
+    fill("#F9000C");
+    circle(width/2 + 30 + 95, height/2 - 380/2 - 40, 15);
+  }
+  
 }
 
 
@@ -123,25 +131,22 @@ function computerEyeStarter(){
   leftPupilOutCom.fill('red');
   leftPupilOutCom.noStroke();
   leftPupilOutCom.ellipse(50, 25, 50, 50);
-  leftPupilOutCom = leftPupilOutCom.get();
   
   // pupil inside
   leftPupilInCom.fill('black');
   leftPupilInCom.noStroke();
   leftPupilInCom.ellipse(50, 25, 35, 35);
-  leftPupilInCom = leftPupilInCom.get();
   
   // pupil outside
   rightPupilOutCom.fill('red');
   rightPupilOutCom.noStroke();
   rightPupilOutCom.ellipse(200, 25, 50, 50);
-  rightPupilOutCom = rightPupilOutCom.get();
 
   // pupil inside
   rightPupilInCom.fill('black');
   rightPupilInCom.noStroke();
   rightPupilInCom.ellipse(200, 25, 35, 35);
-  rightPupilInCom = rightPupilInCom.get();
+  
 }
 
 
@@ -156,30 +161,22 @@ function playerEyeStarter(){
 
   rightPupilOutPlay = createGraphics(width, height);
   rightPupilInPlay = createGraphics(width, height);
-  
-  // // pupil outside
-  // leftPupilOutPlay.fill('#8EA1FF');
-  // leftPupilOutPlay.noStroke();
-  // leftPupilOutPlay.ellipse(50, 25, 50, 50);
-  // // leftPupilOutPlay = leftPupilOutPlay.get();
-  
-  // // pupil inside
-  // leftPupilInPlay.fill('black');
-  // leftPupilInPlay.noStroke();
-  // leftPupilInPlay.ellipse(50, 25, 35, 35);
-  // leftPupilInPlay = leftPupilInPlay.get();
-  
-  // // pupil outside
-  // rightPupilOutPlay.fill('#8EA1FF');
-  // rightPupilOutPlay.noStroke();
-  // rightPupilOutPlay.ellipse(200, 25, 50, 50);
-  // rightPupilOutPlay = rightPupilOutPlay.get();
 
-  // // pupil inside
-  // rightPupilInPlay.fill('black');
-  // rightPupilInPlay.noStroke();
-  // rightPupilInPlay.ellipse(200, 25, 35, 35);
-  // rightPupilInPlay = rightPupilInCom.get();
+  leftPupilOutPlay.fill('#8EA1FF');
+  leftPupilOutPlay.noStroke();
+  leftPupilOutPlay.ellipse(35, 25, 50, 50);
+  
+  leftPupilInPlay.fill('black');
+  leftPupilInPlay.noStroke();
+  leftPupilInPlay.ellipse(35, 25, 35, 35);
+
+  rightPupilOutPlay.fill('#8EA1FF');
+  rightPupilOutPlay.noStroke();
+  rightPupilOutPlay.ellipse(185, 25, 50, 50);
+
+  rightPupilInPlay.fill('black');
+  rightPupilInPlay.noStroke();
+  rightPupilInPlay.ellipse(185, 25, 35, 35);
 }
 
 
@@ -207,18 +204,22 @@ function drawComputerEye(){
   
   image(rightEyeCom, 0, 0, width, height);
   
+  // pupil outside
+  let leftPupilOutComImg = leftPupilOutCom.get();
+  leftPupilOutComImg.mask(leftEyeCom);
+  image(leftPupilOutComImg, 0, 0, width, height);
   
-  leftPupilOutCom.mask(leftEyeCom);
-  image(leftPupilOutCom, 0, 0, width, height);
-  
-  leftPupilInCom.mask(leftEyeCom);
-  image(leftPupilInCom, 0, 0, width, height);
+  let leftPupilInComImg = leftPupilInCom.get();
+  leftPupilInComImg.mask(leftEyeCom);
+  image(leftPupilInComImg, 0, 0, width, height);
 
-  rightPupilOutCom.mask(rightEyeCom);
-  image(rightPupilOutCom, 0, 0, width, height);
+  let rightPupilOutComImg = rightPupilOutCom.get();
+  rightPupilOutComImg.mask(rightEyeCom);
+  image(rightPupilOutComImg, 0, 0, width, height);
 
-  rightPupilInCom.mask(rightEyeCom);
-  image(rightPupilInCom, 0, 0, width, height);
+  let rightPupilInComImg = rightPupilInCom.get();
+  rightPupilInComImg.mask(rightEyeCom);
+  image(rightPupilInComImg, 0, 0, width, height);
 
   // eyebrows
   fill("#4747F3");
@@ -250,34 +251,18 @@ function drawPlayerEye(){
   
   image(rightEyePlay, 0, 0, width, height);
   
-  leftPupilOutPlay.clear();
-  leftPupilOutPlay.fill('#8EA1FF');
-  leftPupilOutPlay.noStroke();
-  leftPupilOutPlay.ellipse(50, 25, 50, 50);
   let leftPupilOutPlayImg = leftPupilOutPlay.get();
   leftPupilOutPlayImg.mask(leftEyePlay);
   image(leftPupilOutPlayImg, 0, 0, width, height);
   
-  leftPupilInPlay.clear();
-  leftPupilInPlay.fill('black');
-  leftPupilInPlay.noStroke();
-  leftPupilInPlay.ellipse(50, 25, 35, 35);
   let leftPupilInPlayImg = leftPupilInPlay.get();
   leftPupilInPlayImg.mask(leftEyePlay);
   image(leftPupilInPlayImg, 0, 0, width, height);
 
-  rightPupilOutPlay.clear();
-  rightPupilOutPlay.fill('#8EA1FF');
-  rightPupilOutPlay.noStroke();
-  rightPupilOutPlay.ellipse(200, 25, 50, 50);
   let rightPupilOutPlayImg = rightPupilOutPlay.get();
   rightPupilOutPlayImg.mask(rightEyePlay);
   image(rightPupilOutPlayImg, 0, 0, width, height);
 
-  rightPupilInPlay.clear();
-  rightPupilInPlay.fill('black');
-  rightPupilInPlay.noStroke();
-  rightPupilInPlay.ellipse(200, 25, 35, 35);
   let rightPupilInPlayImg = rightPupilInPlay.get();
   rightPupilInPlayImg.mask(rightEyePlay);
   image(rightPupilInPlayImg, 0, 0, width, height);

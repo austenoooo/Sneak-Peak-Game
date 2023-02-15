@@ -10,6 +10,8 @@ let rafId;
 // defaul if false
 let playerEyeOpen = true;
 
+let detectionStart = false;
+
 // detector
 var detector = undefined;
 
@@ -110,6 +112,7 @@ async function renderResult(){
 
     // detectors may throw errors
     try{
+      detectionStart = true;
       faces = await detector.estimateFaces(video, {flipHorizontal: false});
     }catch (error){
       detector.dispose();
