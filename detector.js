@@ -76,6 +76,7 @@ var leftPos = [];
 var points = [];
 
 // whether player eye is open
+// defaul if false
 var playerEyeOpen = true;
 
 function detectWebcam() {
@@ -138,7 +139,9 @@ function detectWebcam() {
 function checkEyeClose(keypoints){
 
     // calculate threshold based on the detected height of the face
-    let threshold = 8;
+    
+    let threshold = Math.abs(parseFloat(keypoints[152].y) - parseFloat(keypoints[10]. y)) / 30;
+    console.log(threshold);
         
     let leftEyeOpen = true;
     let rightEyeOpen = true;

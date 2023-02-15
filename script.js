@@ -284,8 +284,8 @@ function drawPlayerEye(){
 
   // eyebrows
   fill("#FFC8FF");
-  circle(125 - 30, -30, 10, 10);
-  circle(125 + 30, -30, 10, 10);
+  circle(125 - 30, -30, 10);
+  circle(125 + 30, -30, 10);
 
   pop();
 }
