@@ -2,6 +2,13 @@
 const video = document.getElementById("webcam");
 const liveView = document.getElementById("live-view");
 
+let startInferenceTime, numInferences = 0;
+let inferenceTimeSum = 0;
+let rafId;
+
+// whether player eye is open
+// defaul if false
+let playerEyeOpen = true;
 
 // detector
 var detector = undefined;
@@ -11,11 +18,11 @@ const estimationConfig = {flipHorizontal: false};
 function loadModel(){
   const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh;
   const detectorConfig = {
-    runtime: 'tfjs',
+    runtime: 'mediapipe',
+    solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
     refineLandmarks: true
   };
   
-  // not sure if the syntex is correct or not
   faceLandmarksDetection.createDetector(model, detectorConfig).then(function (loadedDetector){
   detector = loadedDetector;
   loadCamera();
@@ -62,7 +69,8 @@ function enableCam(event){
   //activate the webcam strem
   navigator.mediaDevices.getUserMedia(constraints).then(function (stream) {
     video.srcObject = stream;
-    video.addEventListener("loadeddata", detectWebcam);
+    // video.addEventListener("loadeddata", renderPrediction);
+    renderPrediction();
   });
 }
 
@@ -75,64 +83,113 @@ var rightPos = [];
 var leftPos = [];
 var points = [];
 
-// whether player eye is open
-// defaul if false
-var playerEyeOpen = true;
-
-function detectWebcam() {
-  detector.estimateFaces(video, estimationConfig).then(function (results){
-    // console.log(results);
-    rightPos.splice(0);
-    leftPos.splice(0);
-    
-    for (let i = 0; i < points.length; i++){
-      liveView.removeChild(points[i]);
-    }
-    points.splice(0);
-
-    // when there is face detected
-    if (results.length > 0){
-      let keypoints = results[0].keypoints;
-
-      playerEyeOpen = checkEyeClose(keypoints);
-      console.log(playerEyeOpen);
-      
-      // get all the position of the vertex of the right eye
-      for (let i = 0; i < rightCoor.length; i++){
-        let pos = keypoints[rightCoor[i]];
-        rightPos.push({x: pos.x, y: pos.y});
-
-        // drawing the point
-        // const point = document.createElement("div");
-        // point.setAttribute("class", "keypoints");
-        // point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
-
-        // liveView.appendChild(point);
-        // points.push(point);
-
-      }
-
-      // get all the position of the vertex of the left eye
-      for (let i = 0; i < leftCoor.length; i++){
-        let pos = keypoints[leftCoor[i]];
-        leftPos.push({x: pos.x, y: pos.y});
-
-        // drawing the point
-        // const point = document.createElement("div");
-        // point.setAttribute("class", "keypoints");
-        // point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
-
-        // liveView.appendChild(point);
-        // points.push(point);
-      }
-
-    }
-
-    
-  });
-
-  window.requestAnimationFrame(detectWebcam);
+function beginEstimateFaceStats(){
+  startInferenceTime = (performance || Date).now();
 }
+
+function endEstimateFacesStats(){
+  const endInferecetTime = (performance || Date).now();
+  inferenceTimeSum += endInferecetTime - startInferenceTime;
+  ++numInferences;
+}
+
+async function renderResult(){
+  if (video.readyState < 2){
+    await new Promise((resolve) => {
+      video.onloadeddata = () => {
+        resolve(video);
+      };
+    });
+  }
+
+  let faces = undefined;
+
+  // detector can be null if initualization fail
+  if (detector){
+    beginEstimateFaceStats();
+
+    // detectors may throw errors
+    try{
+      faces = await detector.estimateFaces(video, {flipHorizontal: false});
+    }catch (error){
+      detector.dispose();
+      detector = undefined;
+      alert(error);
+    }
+
+    endEstimateFacesStats();
+  }
+
+  if (faces && faces.length > 0){
+    let keypoints = faces[0].keypoints;
+
+    playerEyeOpen = checkEyeClose(keypoints);
+    console.log(playerEyeOpen);
+  }
+}
+
+
+async function renderPrediction() {
+  await renderResult();
+
+  rafId = requestAnimationFrame(renderPrediction);
+}
+
+
+// function detectWebcam() {
+//   detector.estimateFaces(video, estimationConfig).then(function (results){
+//     // console.log(results);
+//     rightPos.splice(0);
+//     leftPos.splice(0);
+    
+//     for (let i = 0; i < points.length; i++){
+//       liveView.removeChild(points[i]);
+//     }
+//     points.splice(0);
+
+//     // when there is face detected
+//     if (results.length > 0){
+//       let keypoints = results[0].keypoints;
+
+//       playerEyeOpen = checkEyeClose(keypoints);
+//       console.log(playerEyeOpen);
+      
+//       // get all the position of the vertex of the right eye
+//       for (let i = 0; i < rightCoor.length; i++){
+//         let pos = keypoints[rightCoor[i]];
+//         rightPos.push({x: pos.x, y: pos.y});
+
+//         // drawing the point
+//         // const point = document.createElement("div");
+//         // point.setAttribute("class", "keypoints");
+//         // point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
+
+//         // liveView.appendChild(point);
+//         // points.push(point);
+
+//       }
+
+//       // get all the position of the vertex of the left eye
+//       for (let i = 0; i < leftCoor.length; i++){
+//         let pos = keypoints[leftCoor[i]];
+//         leftPos.push({x: pos.x, y: pos.y});
+
+//         // drawing the point
+//         // const point = document.createElement("div");
+//         // point.setAttribute("class", "keypoints");
+//         // point.style = "left: " + pos.x + "px; top: " + pos.y + "px;";
+
+//         // liveView.appendChild(point);
+//         // points.push(point);
+//       }
+
+//     }
+
+    
+//   });
+
+//   window.requestAnimationFrame(detectWebcam);
+// }
 
 
 // check whether the play's eyes are closed
