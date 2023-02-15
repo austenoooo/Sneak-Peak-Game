@@ -134,54 +134,59 @@ function detectWebcam() {
 
 let myCanva;
 let capture;
-let rightMask;
-let leftMask;
 
 // p5 code
 function setup(){
   myCanva = createCanvas(window.innerWidth, window.innerHeight);
   myCanva.parent("canva");
-
-  capture = createCapture(VIDEO);
-  capture.hide();
-
-  rightMask = createGraphics(width, height);
-  leftMask = createGraphics(width, height);
 }
 
 function draw(){
 
-  rightMask = createGraphics(width, height);
-  leftMask = createGraphics(width, height);
+}
 
-  // background
-  background(255);
-
-  // draw the video
-  // image(capture, 0, 0, 640, 480);
-
-  // draw the eye contours when availabel
+function checkEyeClose(){
   if (rightPos.length > 0 && leftPos.length > 0){
-    noFill();
-    noStroke();
-
-    rightMask.push();
-    rightMask.beginShape();
-    for(let i = 0; i < rightPos.length; i++){
-      rightMask.curveVertex(rightPos[i].x, rightPos[i].y);
+  
+      // get the min and max of both the x and y coordinates of the vertex
+      let rightMinX = 100000;
+      let rightMaxX = 0;
+      let rightMinY = 100000;
+      let rightMaxY = 0;
+  
+      for (i = 0; i < rightPos.length; i++){
+        if (rightPos[i].x > rightMaxX){
+          rightMaxX = rightPos[i].x;
+        }
+        if (rightPos[i].x < rightMinX){
+          rightMinX = rightPos[i].x;
+        }
+        if (rightPos[i].y > rightMaxY){
+          rightMaxY = rightPos[i].y;
+        }
+        if (rightPos[i].y < rightMinY){
+          rightMinY = rightPos[i].y;
+        }
+      }
+  
+      let leftMinX = 100000;
+      let leftMaxX = 0;
+      let leftMinY = 100000;
+      let leftMaxY = 0;
+  
+      for (i = 0; i < leftPos.length; i++){
+        if (leftPos[i].x > leftMaxX){
+          leftMaxX = leftPos[i].x;
+        }
+        if (leftPos[i].x < leftMinX){
+          leftMinX = leftPos[i].x;
+        }
+        if (leftPos[i].y > leftMaxY){
+          leftMaxY = leftPos[i].y;
+        }
+        if (leftPos[i].y < leftMinY){
+          leftMinY = leftPos[i].y;
+        }
+      }
     }
-    rightMask.endShape(CLOSE);
-    rightMask.pop();
-
-    // draw left eye contour
-    // beginShape();
-    // for(let i = 0; i < leftPos.length; i++){
-    //   vertex(leftPos[i].x, leftPos[i].y);
-    // }
-    // endShape(CLOSE);
-
-    capture.mask(rightMask);
-    image(capture, 0, 0, capture.width, capture.height);
-
-  }
 }
