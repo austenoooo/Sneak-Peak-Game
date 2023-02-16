@@ -7,8 +7,12 @@ let inferenceTimeSum = 0;
 let rafId;
 
 // whether player eye is open
-// defaul if false
+// default if true
 let playerEyeOpen = true;
+
+// whether computer eye is open
+// defult is true
+let computerEyeOpen = true;
 
 let detectionStart = false;
 
