@@ -61,13 +61,13 @@ function draw(){
   }
 
 
-
+  controlComputerEye();
 
   interfaceFrame();
   
   drawComputerEye();
 
-  drawPlayerEye(eyeHeightPlay);
+  drawPlayerEye();
 
 }
 
@@ -186,10 +186,6 @@ function drawComputerEye(){
     rect(150, 22, 100, 6, 5);
   }
   
-
-
-
-
   // eyebrows
   fill("#4747F3");
   circle(125 - 30, -30, 15);
@@ -240,7 +236,20 @@ function drawPlayerEye(){
   pop();
 }
 
+// default is 0
+let changeStateCountDown = Math.round(Math.random() * 3 + 2);
 
 function controlComputerEye(){
-
+  if (changeStateCountDown == 0){
+    computerEyeOpen = !computerEyeOpen;
+    if (computerEyeOpen){
+      changeStateCountDown = Math.round(Math.random() * 30 + 20);
+    }
+    else{
+      changeStateCountDown = Math.round(Math.random() * 100 + 40);
+    }
+  }
+  else{
+    changeStateCountDown -= 1;
+  }
 }
