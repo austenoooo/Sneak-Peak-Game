@@ -94,6 +94,14 @@ function draw(){
     result.style.opacity = 1;
     result.style.visibility = "visible";
     result.style.pointerEvents = "auto";
+
+
+    // reset 
+    gameStart = false;
+    gamePause = false;
+    gameEnd = false;
+    win = false;
+
   }
 
 }
@@ -284,8 +292,6 @@ function controlComputerEye(){
 
 
 function decideResult(){
-
-  console.log("reach here");
   // if the computer eye is open and have been open, player eye is open and have been closed
   // player wins
   if (computerEyeOpen && computerEyeOpenPrev && playerEyeOpen && !playerEyeOpenPrev){
