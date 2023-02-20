@@ -278,7 +278,7 @@ function controlComputerEye(){
   if (changeStateCountDown == 0){
     computerEyeOpen = !computerEyeOpen;
     if (computerEyeOpen){
-      changeStateCountDown = Math.round(Math.random() * 30 + 20);
+      changeStateCountDown = Math.round(Math.random() * 10 + 10);
     }
     else{
       changeStateCountDown = Math.round(Math.random() * 100 + 40);
