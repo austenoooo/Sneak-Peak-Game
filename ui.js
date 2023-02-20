@@ -76,15 +76,15 @@ function startCountdown(){
   setTimeout(function (){
     startContent.textContent = "3";
     startContent.style.fontSize = "5rem";
-  }, 5.0 * 1000);
+  }, 4.0 * 1000);
   
   setTimeout(function (){
     startContent.textContent = "2";
-  }, 6.0 * 1000);
+  }, 5.0 * 1000);
 
   setTimeout(function (){
     startContent.textContent = "1";
-  }, 7.0 * 1000);
+  }, 6.0 * 1000);
 
   setTimeout(function (){
     blueBackdrop.style.opacity = 0;
@@ -92,7 +92,7 @@ function startCountdown(){
     start.style.opacity = 0;
     start.style.pointerEvents = "none";
     gameStart = true;
-  }, 8.0 * 1000);
+  }, 7.0 * 1000);
 }
 
 
