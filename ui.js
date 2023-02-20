@@ -65,6 +65,8 @@ newGame.addEventListener("click", function (){
   startContent.textContent = "You have 3 seconds to close your eyes before the game start!";
   startContent.style.fontSize = "2rem";
 
+  panel.style.top = "100%";
+
   startCountdown();
 });
 
