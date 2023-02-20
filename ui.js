@@ -50,11 +50,7 @@ progressButton.addEventListener("click", function (){
 newGame.addEventListener("click", function (){
 
   // reset all game progress parameters
-  gameStart = false;
-  gamePause = false;
-  gameEnd = false;
-  win = false;
-
+  
   result.style.opacity = 0;
   result.style.visibility = "hidden";
   result.pointerEvents = "none";
@@ -80,15 +76,15 @@ function startCountdown(){
   setTimeout(function (){
     startContent.textContent = "3";
     startContent.style.fontSize = "5rem";
-  }, 2.0 * 1000);
+  }, 5.0 * 1000);
   
   setTimeout(function (){
     startContent.textContent = "2";
-  }, 3.0 * 1000);
+  }, 6.0 * 1000);
 
   setTimeout(function (){
     startContent.textContent = "1";
-  }, 4.0 * 1000);
+  }, 7.0 * 1000);
 
   setTimeout(function (){
     blueBackdrop.style.opacity = 0;
@@ -96,7 +92,7 @@ function startCountdown(){
     start.style.opacity = 0;
     start.style.pointerEvents = "none";
     gameStart = true;
-  }, 5.0 * 1000);
+  }, 8.0 * 1000);
 }
 
 
