@@ -24,11 +24,11 @@ video{
 
 #panel{
   position: absolute;
-  z-index: 2;
+  z-index: 20;
   background: #FFF98D;
   height: 80px;
-  width: calc(100vw - 60px);
-  top: calc(100vh - 80px);
+  width: calc(100vw - 40px);
+  top: calc(100% - 80px);
   padding-left: 40px;
   padding-top: 6px;
 }
@@ -37,4 +37,90 @@ video{
   font-size: 22px;
   color: #16006D;
   font-weight: 600;
+}
+
+#game-rule-button{
+  position: absolute;
+  width: 160px;
+  height: 50px;
+  color: #FFF98D;
+  background-color: #16006D;
+  border-radius: 5px;
+  text-align: center;
+  top: 20px;
+  left: calc(100vw - 40px - 130px - 160px - 20px);
+}
+
+#game-rule-button:hover{
+  color: white;
+  cursor: pointer;
+}
+
+#progress-button{
+  position: absolute;
+  width: 130px;
+  height: 50px;
+  color: #FFF98D;
+  background-color: #16006D;
+  border-radius: 5px;
+  text-align: center;
+  top: 20px;
+  left: calc(100vw - 40px - 130px);
+}
+
+#progress-button:hover{
+  color: white;
+  cursor: pointer;
+}
+
+#yellow-backdrop{
+  position: absolute;
+  z-index: 3;
+  background-color: rgba(255, 254, 236, 0.62);
+  width: 100%;
+  height: calc(100% - 80px);
+  top: 0px;
+  visibility: hidden;
+}
+
+#game-rule{
+  position: absolute;
+  z-index: 4;
+  background-color: #FFF98D;
+  width: 850px;
+  height: 300px;
+  border-radius: 20px;
+  border: solid 10px #16006D;
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  top: calc(40vh - 350px * 0.5);
+  left: calc(50vw - 850px * 0.5 - 20px);
+  visibility: hidden;
+}
+
+#game-rule-title{
+  color:#16006D;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+#game-rule-content{
+  font-family: "futura-pt", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 1.15rem;
+}
+
+#close{
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50px;
+  left: calc(850px - 16px + 30px);
+}
+
+#close:hover{
+  cursor: pointer;
 }

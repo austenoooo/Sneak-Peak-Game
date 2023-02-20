@@ -20,6 +20,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- import adobe font: futura -->
+    <link rel="stylesheet" href="https://use.typekit.net/egl4psp.css">
     
     <title>Sneak Peek Game</title>
     <!-- stylesheet -->
@@ -36,6 +39,23 @@
     
     <div id="panel">
       <p id="title">👀 SNEAK PEEK GAME 👀</p>
+      <div id="game-rule-button"><p>GAME RULE</p></div>
+      <div id="progress-button"><p>START</p></div>
+    </div>
+
+    <div id="yellow-backdrop"></div>
+    <div id="game-rule">
+      <p id="game-rule-title">How to play 👀 SNEAK PEEK GAME 👀?</p>
+      <p id="game-rule-content">Both players close their eyes at the start of the game. <br>
+        The goal is to catch the other player sneak peeking! which means, <br>
+        ➊ You open your eyes to find the computer’s eyes closed --> game continues <br>
+        ➋ You open your eyes to find the computer’s sneak peeking --> you win! <br>
+        ➌ The computer opens its eyes to find that you’re sneak peeking --> you lose :( <br>
+        ➍ Remember to keep your eyes closed as much as possible. Give you opponents less chance to win! <br>
+        <br>
+        Close and open your actual eyes to control the eyes in the game. Hope your eyes get a little break from the screen while playing this game. Happy gaming!
+        </p>
+      <img src="assets/close.png" id="close">
     </div>
     
   </body>
@@ -43,4 +63,5 @@
   <!-- javascript file -->
   <script src="detector.js"></script>
   <script src="script.js"></script>
+  <script src="ui.js"></script>
 </html>
