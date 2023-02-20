@@ -29,7 +29,7 @@ video{
   height: 80px;
   width: calc(100vw - 60px);
   top: calc(100vh - 80px);
-  padding-left: 60px;
+  padding-left: 40px;
   padding-top: 6px;
 }
 

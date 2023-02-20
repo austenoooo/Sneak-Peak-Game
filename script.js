@@ -69,6 +69,17 @@ function draw(){
 
   drawPlayerEye();
 
+  decideResult();
+
+  if (gameEnd){
+    if (win){
+      // if the player win
+    }
+    else {
+      // if the player lose
+    }
+  }
+
 }
 
 
@@ -251,5 +262,24 @@ function controlComputerEye(){
   }
   else{
     changeStateCountDown -= 1;
+  }
+}
+
+let gameEnd = false;
+let win = false;
+
+function decideResult(){
+  // if the computer eye is open and have been open, player eye is open and have been closed
+  // player wins
+  if (computerEyeOpen && computerEyeOpenPrev && playerEyeOpen && !playerEyeOpenPrev){
+    gameEnd = true;
+    win = true;
+  }
+
+  // if the computer eye is open and have been closed, player eye is open and have been open
+  // player loses
+  if (computerEyeOpen && !computerEyeOpenPrev && playerEyeOpen && playerEyeOpen){
+    gameEnd = true;
+    win = false;
   }
 }

@@ -9,10 +9,12 @@ let rafId;
 // whether player eye is open
 // default if true
 let playerEyeOpen = true;
+let playerEyeOpenPrev = true;
 
 // whether computer eye is open
 // defult is true
 let computerEyeOpen = true;
+let computerEyeOpenPrev = true;
 
 let detectionStart = false;
 
@@ -151,7 +153,7 @@ function checkEyeClose(keypoints){
 
     // calculate threshold based on the detected height of the face
     
-    let threshold = Math.abs(parseFloat(keypoints[152].y) - parseFloat(keypoints[10]. y)) / 30;
+    let threshold = Math.abs(parseFloat(keypoints[152].y) - parseFloat(keypoints[10]. y)) / 35;
     console.log(threshold);
         
     let leftEyeOpen = true;
