@@ -90,7 +90,7 @@ video{
 
 #game-rule{
   position: absolute;
-  z-index: 4;
+  z-index: 100;
   background-color: #FFF98D;
   width: 850px;
   height: 300px;
