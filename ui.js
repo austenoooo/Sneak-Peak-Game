@@ -10,7 +10,10 @@ const newGame = document.getElementById("new-game-button");
 const result = document.getElementById("result");
 const resultLineOne = document.getElementById("result-line-one");
 const resultLineTwo = document.getElementById("result-line-two");
+const panel = document.getElementById("panel");
 
+
+// game rule is only clickable when game is not happening
 gameRuleButton.addEventListener("click", function (){
   yellowBackdrop.style.opacity = 1;
   yellowBackdrop.style.pointerEvents = "auto";
@@ -19,8 +22,10 @@ gameRuleButton.addEventListener("click", function (){
 });
 
 close.addEventListener("click", function (){
-  yellowBackdrop.style.opacity = 0;
-  yellowBackdrop.style.pointerEvents = "none";
+  if (result.style.opacity == 0){
+    yellowBackdrop.style.opacity = 0;
+    yellowBackdrop.style.pointerEvents = "none";
+  }
   gameRule.style.opacity = 0;
   gameRule.style.pointerEvents = "none";
 });
@@ -28,22 +33,22 @@ close.addEventListener("click", function (){
 progressButton.addEventListener("click", function (){
   let currentText = progressButton.children[0].textContent;
 
-  if (currentText == "START"){
+  if (!gameStart){
+
+    // hide the result
+    yellowBackdrop.style.opacity = 0;
+    yellowBackdrop.style.pointerEvents = "none";
+    result.style.opacity = 0;
+    result.style.pointerEvents = "none";
+
+    startContent.textContent = "You have 3 seconds to close your eyes before the game start!";
+    startContent.style.fontSize = "2rem";
+
+  
+    panel.style.top = "100%";
     
     startCountdown();
-    progressButton.children[0].textContent = "PAUSE";
   }
-
-  if (currentText == "PAUSE"){
-    gamePause = true;
-    progressButton.children[0].textContent = "RESUME";
-  }
-
-  if (currentText == "RESUME"){
-    gamePause = false;
-    progressButton.children[0].textContent = "PAUSE";
-  }
-  
 });
 
 
@@ -92,6 +97,8 @@ function startCountdown(){
     start.style.opacity = 0;
     start.style.pointerEvents = "none";
     gameStart = true;
+
+    
   }, 7.0 * 1000);
 }
 

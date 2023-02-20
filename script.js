@@ -102,6 +102,8 @@ function draw(){
     gameEnd = false;
     win = false;
 
+
+    panel.style.top = "calc(100% - 80px)";
   }
 
 }
