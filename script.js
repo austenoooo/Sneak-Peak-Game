@@ -32,6 +32,14 @@ let rightPupilInPlay;
 
 let eyeHeightPlay = 0;
 
+// game progress
+let gameStart = false;
+
+let gamePause = false;
+
+let gameEnd = false;
+let win = false;
+
 // p5 code
 function setup(){
   myCanva = createCanvas(window.innerWidth, window.innerHeight);
@@ -48,10 +56,7 @@ function setup(){
 function draw(){
 
   background("#FFFEEC");
-  
-  // if(eyeHeightCom - 10 > 0 && frameCount % 2 == 0){
-  //   // eyeHeight -= 10;
-  // }
+
 
   if (playerEyeOpen){
     eyeHeightPlay = 50;
@@ -69,15 +74,26 @@ function draw(){
 
   drawPlayerEye();
 
-  decideResult();
+  if (gameStart){
+    decideResult();
+  }
 
   if (gameEnd){
+    yellowBackdrop.style.opacity = 1;
+    yellowBackdrop.style.pointerEvents = "auto";
     if (win){
       // if the player win
+      resultLineOne.textContent = "Congrats! You won 🏆🥳!!";
+      resultLineTwo.textContent = "You’re legit fast and smart :)";
     }
     else {
       // if the player lose
+      resultLineOne.textContent = "Oops...You lost...😢😩";
+      resultLineTwo.textContent = "But you'll definitely do better next time!";
     }
+    result.style.opacity = 1;
+    result.style.visibility = "visible";
+    result.style.pointerEvents = "auto";
   }
 
 }
@@ -265,10 +281,11 @@ function controlComputerEye(){
   }
 }
 
-let gameEnd = false;
-let win = false;
+
 
 function decideResult(){
+
+  console.log("reach here");
   // if the computer eye is open and have been open, player eye is open and have been closed
   // player wins
   if (computerEyeOpen && computerEyeOpenPrev && playerEyeOpen && !playerEyeOpenPrev){
@@ -282,4 +299,7 @@ function decideResult(){
     gameEnd = true;
     win = false;
   }
+
+  computerEyeOpenPrev = computerEyeOpen;
+  playerEyeOpenPrev = playerEyeOpen;
 }

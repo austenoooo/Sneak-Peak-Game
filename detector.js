@@ -133,7 +133,7 @@ async function renderResult(){
     let keypoints = faces[0].keypoints;
 
     playerEyeOpen = checkEyeClose(keypoints);
-    console.log(playerEyeOpen);
+    // console.log(playerEyeOpen);
   }
 }
 
@@ -154,7 +154,7 @@ function checkEyeClose(keypoints){
     // calculate threshold based on the detected height of the face
     
     let threshold = Math.abs(parseFloat(keypoints[152].y) - parseFloat(keypoints[10]. y)) / 35;
-    console.log(threshold);
+    // console.log(threshold);
         
     let leftEyeOpen = true;
     let rightEyeOpen = true;

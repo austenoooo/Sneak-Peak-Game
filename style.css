@@ -2,6 +2,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Unbounded', cursive;
+  width: 100%;
+  overflow: hidden;
 }
 
 video{
@@ -27,7 +29,7 @@ video{
   z-index: 20;
   background: #FFF98D;
   height: 80px;
-  width: calc(100vw - 40px);
+  width: calc(100% - 40px);
   top: calc(100% - 80px);
   padding-left: 40px;
   padding-top: 6px;
@@ -48,7 +50,7 @@ video{
   border-radius: 5px;
   text-align: center;
   top: 20px;
-  left: calc(100vw - 40px - 130px - 160px - 20px);
+  left: calc(100% - 40px - 130px - 160px - 20px);
 }
 
 #game-rule-button:hover{
@@ -65,7 +67,7 @@ video{
   border-radius: 5px;
   text-align: center;
   top: 20px;
-  left: calc(100vw - 40px - 130px);
+  left: calc(100% - 40px - 130px);
 }
 
 #progress-button:hover{
@@ -80,7 +82,10 @@ video{
   width: 100%;
   height: calc(100% - 80px);
   top: 0px;
-  visibility: hidden;
+  /* visibility: hidden; */
+  opacity: 0;
+  transition: opacity 300ms;
+  pointer-events: none;
 }
 
 #game-rule{
@@ -95,9 +100,67 @@ video{
   padding-left: 40px;
   padding-right: 30px;
   padding-bottom: 30px;
-  top: calc(40vh - 350px * 0.5);
-  left: calc(50vw - 850px * 0.5 - 20px);
-  visibility: hidden;
+  top: calc(40% - 300px * 0.5);
+  left: calc(50% - 850px * 0.5 - 40px);
+  /* visibility: hidden; */
+  opacity: 0;
+  transition: opacity 300ms;
+  pointer-events: none;
+}
+
+#result{
+  position: absolute;
+  z-index: 4;
+  background-color: #FFF98D;
+  width: 650px;
+  height: 300px;
+  border-radius: 20px;
+  border: solid 10px #16006D;
+  padding-top: 30px;
+  padding-left: 40px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  top: calc(40% - 300px * 0.5);
+  left: calc(50% - 650px * 0.5 - 40px);
+  opacity: 0;
+  transition: opacity 300ms;
+  pointer-events: none;
+  text-align: center;
+}
+
+#result-line-one{
+  position: relative;
+  color: #16006D;
+  font-size: 2rem;
+  font-weight: 600;
+  top: 30px;
+}
+
+#result-line-two{
+  position: relative;
+  color: black;
+  font-family: "futura-pt", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  top: 10px;
+}
+
+#new-game-button{
+  position: relative;
+  color:#FFF98D;
+  background-color: #16006D;
+  width: 200px;
+  height: 50px;
+  border-radius: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  left: calc(50% - 200px * 0.5);
+  top: 30px;
+}
+
+#new-game-button:hover{
+  color: white;
+  cursor: pointer;
 }
 
 #game-rule-title{
@@ -123,4 +186,36 @@ video{
 
 #close:hover{
   cursor: pointer;
+}
+
+#blue-backdrop{
+  position: absolute;
+  z-index: 3;
+  background-color: rgba(0, 11, 107, 0.9);
+  width: 100%;
+  height: calc(100% - 80px);
+  top: 0px;
+  opacity: 0;
+  transition: opacity 100ms;
+  pointer-events: none;
+}
+
+#start{
+  position: absolute;
+  width: 700px;
+  height: 200px;
+  z-index: 4;
+  text-align: center;
+  top: calc(45% - 200px * 0.5);
+  left: calc(50% - 700px * 0.5);
+  opacity: 0;
+  transition: opacity 100ms;
+  pointer-events: none;
+}
+
+#start-content{
+  color: #FFFEEC;
+  font-size: 2rem;
+  line-height: 3rem;
+  text-shadow: 2px 2px 4px #16006D;
 }
